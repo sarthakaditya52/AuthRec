@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+    {% block content %}
+        <h1>Welcome</h1>
+        <form action="main" method="POST">
+            {% csrf_token %}
+            <button type="submit" value="1" name="input">Sign In</button>
+            <button type="submit" value="2" name="input">Sign Up</button>
+        </form>
+    {% endblock %}
