@@ -6,7 +6,7 @@ import scipy.io.wavfile as wvrd
 #from statistics import variance
 
 fng = 'FINGERPRINT='
-threshold = 0.63
+threshold = 0.69
 
 def covariance(f1 , f2 , l) :
     m1 = np.mean(f1)
@@ -69,13 +69,16 @@ def similarity(f1 , f2 , span , step) :
         
 def chromaFingerprint(path) :
     # chromaout = cmd.getoutput('fpcalc -raw %s' %(path))
-    chromaout = subprocess.call("fpcalc -raw "+ path, shell=True)
-    print (chromaout)
+    # subprocess.call("fpcalc -raw "+ path, shell=True)
+    chromaout = subprocess.getoutput('fpcalc -raw '+path)
     ind = chromaout.find(fng) + len(fng)
-    #print ind
-    chromaprints = map(int , chromaout[ind : ].split(','))
-    #print chromaprints
-    return chromaprints
+    er = chromaout.find('ERROR')
+    print(chromaout[ind : ])
+    if (er < 0):
+        chromaprints = map(int , chromaout[ind : ].split(','))
+    else:
+        chromaprints = map(int, [-1])
+    return list(chromaprints)
 
 def results(crossarray , span , step) :
     delayarray = np.arange(-span , span + 1 , step)
@@ -86,13 +89,13 @@ def results(crossarray , span , step) :
     
     if corr == 1 :
         print ('Successfully authenticated with correlation %.4f' %(corr) )
-        return corr , delayarray[ind]
+        return corr , delayarray[ind] , True
     if corr >= threshold :
         print ('Successfully authenticated with correlation %.4f %.4f' %(corr , corr_mean) )
-        return corr_mean , delayarray[ind]
+        return corr_mean , delayarray[ind], True
     print ('Not Authenticated')
 #    print corr
-    return corr , delayarray[ind]
+    return corr , delayarray[ind], False
 
 def start(rec , save , step = 1) : 
     recprints = chromaFingerprint(rec)

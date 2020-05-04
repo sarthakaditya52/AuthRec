@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
     {% block content %}
-        <h1>Welcome</h1>
+        <h1>Home</h1>
         <form action="main" method="POST">
             {% csrf_token %}
-            <button type="submit" value="1" name="input">Sign In</button>
-            <button type="submit" value="2" name="input">Sign Up</button>
+            <button class="btn btn-primary" type="submit" value="1" name="input">Sign In</button>
+            <button class="btn btn-primary" type="submit" value="2" name="input">Sign Up</button>
+            <br>
+            <br>
+            <button class="btn btn-primary" type="submit" value="3" name="input">Change Password</button>
         </form>
     {% endblock %}

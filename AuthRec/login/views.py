@@ -13,6 +13,7 @@ import sounddevice
 from scipy.io.wavfile import write
 import subprocess
 from subprocess import getoutput as gt
+import time
 
 
 def recording(Name, Range, Path, second) :
@@ -38,8 +39,10 @@ def main(request):
     val = int(request.POST['input'])
     if (val == 1):
         return render(request,'login.html')
-    else:
+    elif (val == 2):
         return render(request,'register.html')
+    else :
+        return render(request,'password.html')
 
 def register(request):
     name = request.POST['name']
@@ -73,28 +76,71 @@ def register(request):
         return render(request, 'register.html')
 
 def login(request):
-    # print "press 1 to give passcode"
-    # input()
     passRec = request.POST['passRec']
     recording("temp" , 1 , "",8)
     name = GMMTesting.testSingleaudio("temp1.wav")
     preprocessing.start("temp1.wav")
     print (name)
-    
-    
-    #corr , offset  = recognition.start1('temp1.wav'  , "PasswordData/"+name+"/"+name+"1.wav")
-    #corr , offset  = recognition.start('temp1.wav'  , "PasswordData/"+name+"/"+name+"1.wav")
+    result = False
 
-    corr , offset  = recognition.start('temp1.wav'  , "PasswordData/"+name+"/"+name+"1.wav")
-    corr , offset  = recognition.start('temp1.wav'  , "PasswordData/"+name+"/"+name+"2.wav")
-    corr , offset  = recognition.start('temp1.wav'  , "PasswordData/"+name+"/"+name+"3.wav")
-    corr , offset  = recognition.start('temp1.wav'  , "PasswordData/"+name+"/"+name+"4.wav")
-    corr , offset  = recognition.start('temp1.wav'  , "PasswordData/"+name+"/"+name+"5.wav")
+    corr , offset , flag  = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"1.wav")
+    if(flag):
+        result = True
+    corr , offset , flag = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"2.wav")
+    if(flag):
+        result = True
+    corr , offset , flag = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"3.wav")
+    if(flag):
+        result = True
+    corr , offset , flag = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"4.wav")
+    if(flag):
+        result = True
+    corr , offset , flag = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"5.wav")
+    if(flag):
+        result = True
     
-    # if corr > threshold :
-    #     print "Hello " + name
-    # else :
-    #     print name
-    #     print "Not Authenticated. Try Again!"
-#        gt("rm temp1.wav")
-    #authentication to be added
+    return render(request, 'result.html',{'name':name, 'result' : result})
+
+def changePass(request):
+    name = request.POST['name']
+    dur = request.POST['dur']
+
+    if(name and dur):
+        dur = int(dur)
+        # name = raw_input()
+        # passpath = "PasswordData/"+name
+        # print "give pass duration:"
+        passpath = "login/Backend/PasswordData/"+name
+
+        # time.sleep(1)
+        # recording(name + '1.wav',10,passpath,dur)
+        # preprocessing.start(name+"1.wav")
+        # subprocess.call(["mv", name+"1.wav", passpath])
+        
+        # time.sleep(1)
+        # recording(name + '2.wav',10,passpath,dur)
+        # preprocessing.start(name+"2.wav")
+        # subprocess.call(["mv", name+"2.wav", passpath])
+        
+        # time.sleep(1)
+        # recording(name + '3.wav',10,passpath,dur)
+        # preprocessing.start(name+"3.wav")
+        # subprocess.call(["mv", name+"3.wav", passpath])
+
+        # time.sleep(1)
+        # recording(name + '4.wav',10,passpath,dur)
+        # preprocessing.start(name+"4.wav")
+        # subprocess.call(["mv", name+"4.wav", passpath])
+        
+        # time.sleep(1)
+        # recording(name + '5.wav',10,passpath,dur)
+        # preprocessing.start(name+"5.wav")
+        # subprocess.call(["mv", name+"5.wav", passpath])
+        time.sleep(5*6)
+
+        return render(request,'home.html')
+
+    if (name):
+        return render(request, 'password.html', {'name':name })
+    else: 
+        return render(request, 'password.html')

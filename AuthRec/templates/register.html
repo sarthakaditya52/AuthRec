@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
     {% block content %}
-        <h1>Welcome to Register</h1>
+        <h1>Register</h1>
         {% if name and recorded %}
             <h2>Hello {{name}}</h2>
             <form action="getName" method="POST">
@@ -8,7 +8,8 @@
                     <p>Press button to record Password</p>
                     <input type="hidden" value={{name}} name="name" >
                     <input value="1" name="pass" type="hidden">
-                    <button value="1" name="record" type="submit">Start</button>
+                    <br>
+                    <button class="btn btn-success" value="1" name="record" type="submit">Start</button>
             </form>
         {% elif name and not recorded %}
             <h2>Hello {{name}}</h2>
@@ -17,16 +18,19 @@
                     <p>Press button to start recording</p>
                     <input type="hidden" value={{name}} name="name" >
                     <input name="pass" type="hidden">
-                    <button value="1" name="record" type="submit">Start</button>
+                    <br>
+                    <button class="btn btn-success" value="1" name="record" type="submit">Start</button>
             </form>
         {% else %}
             <p> Please enter your name </p>
             <form action="getName" method="POST">
                 {% csrf_token %}
                     <input type="text" name="name" >
+                    <br>
                     <input name="record" type="hidden">
                     <input name="pass" type="hidden">
-                    <input type="submit" />
+                    <br>
+                    <input class="btn btn-success" type="submit" />
             </form>
         {% endif %}
     {% endblock %}

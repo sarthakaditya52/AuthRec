@@ -25,6 +25,7 @@ def GMMModels(audiopath , modeldest) :
 def singleModelTraining(audiopath,modeldest):
     mfcc_features = np.asarray(())
     for folder in os.listdir(audiopath):
+        print(audiopath+'/'+folder)
         samplerate , audiofile = rd(audiopath + '/'+folder )
         tmp   = extract_features(audiofile,samplerate)
         if mfcc_features.size == 0 :
