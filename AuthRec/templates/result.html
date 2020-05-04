@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
     {% block content %}
-        <h1>Result</h1>
-        {% if result %}
-            <h2>Hello {{name}}</h2>
-            <p>Authorisation Successful</p>
-        {% else %}
-            <p> Authorisation Failed</p>
-        {% endif %}
-        <form action="/" method="POST">
+        <form class="boxtype" action="/" method="POST">
             {% csrf_token %}
-                <p>Return to Home</p>
+                <h2>Result</h2>
+                {% if result %}
+                    <h3>Hello {{name}}</h3>
+                    <h4>Authorisation Successful</h4>
+                {% else %}
+                    <h4> Authorisation Failed</h4>
+                {% endif %}
+                <label>Return to Home</label>
                 <br>
                 <button class="btn btn-success" type="submit">Home</button>
         </form>

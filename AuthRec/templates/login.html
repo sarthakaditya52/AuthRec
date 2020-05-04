@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
     {% block content %}
-        <h1>Login</h1>
-        <p>Press Start to record passcode</p>
-        <br>
-        <form action="login" method="POST">
+        <form action="login" method="POST" class="boxtype">
             {% csrf_token %}
+                <h2>Login</h2>
+                <br>    
+                <label>Press Start to record passcode</label>
                 <button class="btn btn-success" value="1" name="passRec" type="submit" >Start </button>
         </form>
     {% endblock %}

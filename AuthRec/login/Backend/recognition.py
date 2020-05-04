@@ -6,7 +6,7 @@ import scipy.io.wavfile as wvrd
 #from statistics import variance
 
 fng = 'FINGERPRINT='
-threshold = 0.69
+threshold = 0.63
 
 def covariance(f1 , f2 , l) :
     m1 = np.mean(f1)
@@ -73,7 +73,6 @@ def chromaFingerprint(path) :
     chromaout = subprocess.getoutput('fpcalc -raw '+path)
     ind = chromaout.find(fng) + len(fng)
     er = chromaout.find('ERROR')
-    print(chromaout[ind : ])
     if (er < 0):
         chromaprints = map(int , chromaout[ind : ].split(','))
     else:
@@ -87,15 +86,9 @@ def results(crossarray , span , step) :
     
     corr_mean = np.mean(crossarray)
     
-    if corr == 1 :
-        print ('Successfully authenticated with correlation %.4f' %(corr) )
-        return corr , delayarray[ind] , True
     if corr >= threshold :
-        print ('Successfully authenticated with correlation %.4f %.4f' %(corr , corr_mean) )
-        return corr_mean , delayarray[ind], True
-    print ('Not Authenticated')
-#    print corr
-    return corr , delayarray[ind], False
+        return 1
+    return 0
 
 def start(rec , save , step = 1) : 
     recprints = chromaFingerprint(rec)

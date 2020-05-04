@@ -47,15 +47,40 @@ def main(request):
 def register(request):
     name = request.POST['name']
     record = request.POST['record']
+    dur = request.POST['dur']
     passRecord = request.POST['pass']
-    if (name and record and passRecord):
+    if (name and record and dur):
+        dur = int(dur)
+        # name = raw_input()
+        # passpath = "PasswordData/"+name
+        # print "give pass duration:"
         passpath = "login/Backend/PasswordData/"+name
-        # gt("mkdir %s" %(passpath))
-        proc=subprocess.Popen("mkdir "+passpath, shell=True)
-        proc.wait()        
-        recording(name,1,passpath, 8)
-        # gt("mv %s %s" %(name+"1.wav" , passpath)) 
+
+        time.sleep(1)
+        recording(name + '1.wav',10,passpath,dur)
+        preprocessing.start(name+"1.wav")
         subprocess.call(["mv", name+"1.wav", passpath])
+        
+        time.sleep(1)
+        recording(name + '2.wav',10,passpath,dur)
+        preprocessing.start(name+"2.wav")
+        subprocess.call(["mv", name+"2.wav", passpath])
+        
+        time.sleep(1)
+        recording(name + '3.wav',10,passpath,dur)
+        preprocessing.start(name+"3.wav")
+        subprocess.call(["mv", name+"3.wav", passpath])
+
+        time.sleep(1)
+        recording(name + '4.wav',10,passpath,dur)
+        preprocessing.start(name+"4.wav")
+        subprocess.call(["mv", name+"4.wav", passpath])
+        
+        time.sleep(1)
+        recording(name + '5.wav',10,passpath,dur)
+        preprocessing.start(name+"5.wav")
+        subprocess.call(["mv", name+"5.wav", passpath])
+        
         return render(request, 'home.html')
     if (name and record):
         path = "login/Backend/TrainingData/" + name
@@ -83,22 +108,16 @@ def login(request):
     print (name)
     result = False
 
-    corr , offset , flag  = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"1.wav")
-    if(flag):
+    corr1   = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"1.wav")
+    corr2   = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"2.wav")
+    corr3   = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"3.wav")
+    corr4   = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"4.wav")
+    corr5   = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"5.wav")
+
+    confirm=0
+    confirm=corr1+corr2+corr3+corr4+corr5
+    if confirm > 2 :
         result = True
-    corr , offset , flag = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"2.wav")
-    if(flag):
-        result = True
-    corr , offset , flag = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"3.wav")
-    if(flag):
-        result = True
-    corr , offset , flag = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"4.wav")
-    if(flag):
-        result = True
-    corr , offset , flag = recognition.start('temp1.wav'  , "login/Backend/PasswordData/"+name+"/"+name+"5.wav")
-    if(flag):
-        result = True
-    
     return render(request, 'result.html',{'name':name, 'result' : result})
 
 def changePass(request):
@@ -112,31 +131,30 @@ def changePass(request):
         # print "give pass duration:"
         passpath = "login/Backend/PasswordData/"+name
 
-        # time.sleep(1)
-        # recording(name + '1.wav',10,passpath,dur)
-        # preprocessing.start(name+"1.wav")
-        # subprocess.call(["mv", name+"1.wav", passpath])
+        time.sleep(1)
+        recording(name + '1.wav',10,passpath,dur)
+        preprocessing.start(name+"1.wav")
+        subprocess.call(["mv", name+"1.wav", passpath])
         
-        # time.sleep(1)
-        # recording(name + '2.wav',10,passpath,dur)
-        # preprocessing.start(name+"2.wav")
-        # subprocess.call(["mv", name+"2.wav", passpath])
+        time.sleep(1)
+        recording(name + '2.wav',10,passpath,dur)
+        preprocessing.start(name+"2.wav")
+        subprocess.call(["mv", name+"2.wav", passpath])
         
-        # time.sleep(1)
-        # recording(name + '3.wav',10,passpath,dur)
-        # preprocessing.start(name+"3.wav")
-        # subprocess.call(["mv", name+"3.wav", passpath])
+        time.sleep(1)
+        recording(name + '3.wav',10,passpath,dur)
+        preprocessing.start(name+"3.wav")
+        subprocess.call(["mv", name+"3.wav", passpath])
 
-        # time.sleep(1)
-        # recording(name + '4.wav',10,passpath,dur)
-        # preprocessing.start(name+"4.wav")
-        # subprocess.call(["mv", name+"4.wav", passpath])
+        time.sleep(1)
+        recording(name + '4.wav',10,passpath,dur)
+        preprocessing.start(name+"4.wav")
+        subprocess.call(["mv", name+"4.wav", passpath])
         
-        # time.sleep(1)
-        # recording(name + '5.wav',10,passpath,dur)
-        # preprocessing.start(name+"5.wav")
-        # subprocess.call(["mv", name+"5.wav", passpath])
-        time.sleep(5*6)
+        time.sleep(1)
+        recording(name + '5.wav',10,passpath,dur)
+        preprocessing.start(name+"5.wav")
+        subprocess.call(["mv", name+"5.wav", passpath])
 
         return render(request,'home.html')
 
